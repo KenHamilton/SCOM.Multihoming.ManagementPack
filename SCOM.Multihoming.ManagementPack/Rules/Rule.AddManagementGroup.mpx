@@ -1,0 +1,106 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+    <DataSourceModuleType ID="SCOM.Multihoming.Rule.AddMG.DS" Accessibility="Public" Batching="false">
+      <Configuration>
+        <xsd:element name="IntervalSeconds" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element name="SpreadInitializationOverInterval" type="xsd:int" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <OverrideableParameters>
+        <OverrideableParameter ID="IntervalSeconds" Selector="$Config/IntervalSeconds$" ParameterType="int" />
+        <OverrideableParameter ID="SpreadInitializationOverInterval" Selector="$Config/SpreadInitializationOverInterval$" ParameterType="string" />
+      </OverrideableParameters>
+      <ModuleImplementation Isolation="Any">
+        <Composite>
+          <MemberModules>
+            <DataSource ID="DS" TypeID="System!System.Scheduler">
+              <Scheduler>
+                <SimpleReccuringSchedule>
+                  <Interval Unit="Seconds">$Config/IntervalSeconds$</Interval>
+                  <SpreadInitializationOverInterval>$Config/SpreadInitializationOverInterval$</SpreadInitializationOverInterval>
+                </SimpleReccuringSchedule>
+                <ExcludeDates />
+              </Scheduler>
+            </DataSource>
+          </MemberModules>
+          <Composition>
+            <Node ID="DS" />
+          </Composition>
+        </Composite>
+      </ModuleImplementation>
+      <OutputType>System!System.TriggerData</OutputType>
+    </DataSourceModuleType>
+    <WriteActionModuleType ID="SCOM.Multihoming.Rule.AddMG.WA" Accessibility="Internal" Batching="false">
+      <Configuration>
+        <xsd:element minOccurs="1" name="MGtoADD" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element minOccurs="1" name="MStoASSIGN" type="xsd:string" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+        <xsd:element minOccurs="1" name="TimeoutSeconds" type="xsd:integer" xmlns:xsd="http://www.w3.org/2001/XMLSchema" />
+      </Configuration>
+      <OverrideableParameters>
+        <OverrideableParameter ID="MGtoADD" Selector="$Config/MGtoADD$" ParameterType="string" />
+        <OverrideableParameter ID="MStoASSIGN" Selector="$Config/MStoASSIGN$" ParameterType="string" />
+        <OverrideableParameter ID="TimeoutSeconds" Selector="$Config/TimeoutSeconds$" ParameterType="int" />
+      </OverrideableParameters>
+      <ModuleImplementation Isolation="Any">
+        <Composite>
+          <MemberModules>
+            <WriteAction ID="WA" TypeID="Windows!Microsoft.Windows.PowerShellWriteAction">
+              <ScriptName>Add-MultiHomeManagementGroup.ps1</ScriptName>
+              <ScriptBody>$IncludeFileContent/Scripts/Rules/Add-MultiHomeManagementGroup.ps1$</ScriptBody>
+              <Parameters>
+                <Parameter>
+                  <Name>MGtoADD</Name>
+                  <Value>$Config/MGtoADD$</Value>
+                </Parameter>
+                <Parameter>
+                  <Name>MStoASSIGN</Name>
+                  <Value>$Config/MStoASSIGN$</Value>
+                </Parameter>
+              </Parameters>
+              <TimeoutSeconds>$Config/TimeoutSeconds$</TimeoutSeconds>
+            </WriteAction>
+          </MemberModules>
+          <Composition>
+            <Node ID="WA" />
+          </Composition>
+        </Composite>
+      </ModuleImplementation>
+      <OutputType>System!System.BaseData</OutputType>
+      <InputType>System!System.BaseData</InputType>
+    </WriteActionModuleType>
+  </ModuleTypes>
+  </TypeDefinitions>
+  
+  <Monitoring>
+    <Rules>
+      <Rule ID="SCOM.Multihoming.Rule.AddMG" Enabled="false" Target="SC!Microsoft.SystemCenter.Agent" ConfirmDelivery="true" Remotable="true" Priority="Normal" DiscardLevel="100">
+        <Category>Custom</Category>
+        <DataSources>
+          <DataSource ID="Scheduler" TypeID="SCOM.Multihoming.Rule.AddMG.DS">
+            <IntervalSeconds>86400</IntervalSeconds>
+            <SpreadInitializationOverInterval>86400</SpreadInitializationOverInterval>
+          </DataSource>
+        </DataSources>
+        <WriteActions>
+          <WriteAction ID="WA" TypeID="SCOM.Multihoming.Rule.AddMG.WA">
+            <MGtoADD>MGNAME</MGtoADD>
+            <MStoASSIGN>ManagementServerName.domain.com</MStoASSIGN>
+            <TimeoutSeconds>120</TimeoutSeconds>
+          </WriteAction>
+        </WriteActions>
+      </Rule>
+    </Rules>
+  </Monitoring>
+
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="SCOM.Multihoming.Rule.AddMG">
+          <Name>SCOM MultiHome Agent to Additional Management Group Rule</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+
+
+</ManagementPackFragment>

@@ -68,16 +68,23 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Scripts\Discoveries\Discover-GatewayHostedAgents.ps1" />
+    <EmbeddedResource Include="Scripts\Discoveries\Discover-ManagementServerHostedAgents.ps1" />
     <EmbeddedResource Include="Scripts\Rules\Add-MultiHomeManagementGroup.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Groups\Group.GatewayHostedAgents.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\Groups\Group.ManagementServerHostedAgents.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Core\Core.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Discoveries\Discovery.GatewayHostedAgents.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Discoveries\Discovery.ManagementServerHostedAgents.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Rules\Rule.AddManagementGroup.AlertOnScriptError.mpx">

@@ -10,17 +10,4 @@
       </ClassTypes>
     </EntityTypes>
   </TypeDefinitions>
-  <!--
-  <LanguagePacks>
-    <LanguagePack ID="ENU" IsDefault="true">
-      <DisplayStrings>
-      
-        <DisplayString ElementID="SCOM.Multihoming.Group.GatewayHostedAgents">
-          <Name>SCOM  Multihoming Gateway Hosted Agents Group</Name>
-        </DisplayString>
-       
-      </DisplayStrings>
-    </LanguagePack>
-  </LanguagePacks>
-  -->
 </ManagementPackFragment>

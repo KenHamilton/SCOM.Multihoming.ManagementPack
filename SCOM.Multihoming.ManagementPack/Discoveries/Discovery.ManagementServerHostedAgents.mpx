@@ -1,0 +1,32 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Monitoring>
+    <Discoveries>
+      <Discovery ID="SCOM.Modular.Multihoming.Discovery.ManagementServerHostedAgentsGroup" Enabled="true" Target="SC!Microsoft.SystemCenter.RootManagementServer" ConfirmDelivery="false" Remotable="true" Priority="Normal">
+        <Category>Discovery</Category>
+        <DiscoveryTypes>
+          <DiscoveryClass TypeID="SCOM.Modular.Multihoming.Group.ManagementServerHostedAgents" />
+        </DiscoveryTypes>
+        <DataSource ID="DS" TypeID="Windows!Microsoft.Windows.TimedPowerShell.DiscoveryProvider">
+          <IntervalSeconds>86331</IntervalSeconds>
+          <SyncTime/>
+          <ScriptName>Discover-GatewayAgents.ps1</ScriptName>
+          <ScriptBody>$IncludeFileContent/Scripts/Discoveries/Discover-ManagementServerHostedAgents.ps1$</ScriptBody>
+          <Parameters>
+
+            <Parameter>
+              <Name>sourceId</Name>
+              <Value>$MPElement$</Value>
+            </Parameter>
+            <Parameter>
+              <Name>managedEntityId</Name>
+              <Value>$Target/Id$</Value>
+            </Parameter>
+
+          </Parameters>
+          <TimeoutSeconds>300</TimeoutSeconds>
+          <StrictErrorHandling>false</StrictErrorHandling>
+        </DataSource>
+      </Discovery>
+    </Discoveries>
+  </Monitoring>
+</ManagementPackFragment>

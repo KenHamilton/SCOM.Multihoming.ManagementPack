@@ -1,5 +1,5 @@
 # SCOM.Multihoming.ManagementPack
-SCOM Management Pack for Multi-Homing Agents to a new Management Group with automatic Gateway discovery.
+SCOM Management Pack for Multi-Homing Agents to a new Management Group with automatic Gateway and Management Server discovery.
 
 This code is based on a [Management Pack authored by Kevin Holman](https://github.com/thekevinholman/MultiHomeSCOMAgents)
 
